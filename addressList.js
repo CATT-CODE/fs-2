@@ -2,18 +2,27 @@ const fs = require('fs');
 
 async function makeList() {
     try {
-        fs.readFile('addressList.json', 'utf8', (err, info) => {
+            fs.readFile('addressList.json', 'utf8', (err, info) => {
             if (err) return console.log('There is no data in this file');
-            const [{name}] = info
-            let prettify = 
-            `
+            let data = JSON.parse(info);
+            let prettify = `
             *****************
             * Address List: *
-            *****************
-
-            ${name}
+            *****************` + data.forEach(item => 
+            
             `
-            fs.writeFileSync('./addressList.txt', prettify);
+            ${item.name}
+            Address: ${item.address.street}, ${item.address.suite}
+                     ${item.address.city} ${item.address.zipcode}
+            Phone:   ${item.phone}
+            Email:   ${item.email}
+            
+            `);
+
+            let final = JSON.stringify(prettify);
+            
+            
+            fs.writeFileSync('./addressList.txt', final);
         });
     }
     
